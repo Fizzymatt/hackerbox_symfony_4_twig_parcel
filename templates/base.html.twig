@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        {% if essential_styles is defined and essential_styles is not empty %}
+            <style>
+                {{ essential_styles|raw }}
+            </style>
+        {% endif %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+        {% if essential_scripts is defined and essential_scripts is not empty %}
+            <script>
+                {{ essential_scripts|raw }}
+            </script>
+        {% endif %}
+    </body>
+</html>
