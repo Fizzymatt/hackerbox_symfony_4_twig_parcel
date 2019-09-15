@@ -35,8 +35,12 @@ npm install parcel-bundler -g
 composer run-local-dev
 ```
 
+Your project should be available at http://localhost:8000
+
 ## Running the project in production mode (minification, but no file watching) ##
 
 ```bash
 composer run-local-prod
 ```
+
+Your project should be available at http://localhost:8000
