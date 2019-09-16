@@ -2,7 +2,7 @@
 
 ## Purpose ##
 
-I made this project as part of a tutorial that describes how to use [Parcel.js](https://parceljs.org/) with [Symfony 4](https://symfony.com/4) and the [Twig](https://twig.symfony.com/doc/2.x/intro.html) templating system.
+I made this project as part of a [tutorial](https://hackerbox.io/articles/symfony-4-parcel) that describes how to use [Parcel.js](https://parceljs.org/) with [Symfony 4](https://symfony.com/4) and the [Twig](https://twig.symfony.com/doc/2.x/intro.html) templating system.
 
 **NOTE: this project has only been tested on OSX.**
 
