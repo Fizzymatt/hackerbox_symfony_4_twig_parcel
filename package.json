@@ -10,14 +10,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build_styles_prod": "parcel build styles/homePage/index.css --out-dir public/assets --out-file homePage.bundle.css --no-source-maps",
     "build_scripts_prod": "parcel build scripts/homePage/index.js --out-dir public/assets --out-file homePage.bundle.js --no-source-maps",
+    "add_asset_hash": "node utility/addAssetHashes.js",
     "build_essential_styles_prod": "parcel build styles/essential.css --out-dir public/assets --out-file essential.inline.css --no-source-maps",
     "build_essential_scripts_prod": "parcel build scripts/essential.js --out-dir public/assets --out-file essential.inline.js --no-source-maps",
     "build_styles_dev": "parcel watch styles/homePage/index.css --no-hmr --public-url /assets/ --out-dir public/assets --out-file homePage.bundle.css",
     "build_essential_styles_dev": "parcel watch styles/essential.css --no-hmr --public-url /assets/ --out-dir public/assets --out-file essential.inline.css --no-source-maps",
     "build_essential_scripts_dev": "parcel watch scripts/essential.js --no-hmr --public-url /assets/ --out-dir public/assets --out-file essential.inline.js --no-source-maps",
     "build_scripts_dev": "parcel watch scripts/homePage/index.js --no-hmr --public-url /assets/ --out-dir public/assets --out-file homePage.bundle.js",
-    "build_assets_prod": "find public/assets | grep -E '.*\\.(bundle|inline)\\..*$' | xargs rm; npm run build_essential_styles_prod & npm run build_essential_scripts_prod & npm run build_styles_prod & npm run build_scripts_prod",
-    "build_assets_dev": "find public/assets | grep -E '.*\\.(bundle|inline)\\..*$' | xargs rm; npm run build_essential_styles_dev & npm run build_essential_scripts_dev & npm run build_styles_dev & npm run build_scripts_dev"
+    "build_assets_prod": "find public/assets | grep -E '.*\\.(bundle|inline)(_[a-z0-9]+)?\\..*$' | xargs rm; npm run build_essential_styles_prod & npm run build_essential_scripts_prod & npm run build_styles_prod; npm run build_scripts_prod; npm run add_asset_hash",
+    "build_assets_dev": "find public/assets | grep -E '.*\\.(bundle|inline)(_[a-z0-9]+)?\\..*$' | xargs rm; npm run build_essential_styles_dev & npm run build_essential_scripts_dev & npm run build_styles_dev & npm run build_scripts_dev"
   },
   "author": "",
   "license": "ISC",

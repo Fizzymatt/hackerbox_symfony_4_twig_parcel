@@ -18,7 +18,9 @@ class HomeController extends AbstractController
             'home/index.html.twig',
             [
                 'essential_styles' => ClientBundleHelpers::getEssentialCssInline(),
-                'essential_scripts' => ClientBundleHelpers::getEssentialJsInline()
+                'essential_scripts' => ClientBundleHelpers::getEssentialJsInline(),
+                'bundled_styles' => ClientBundleHelpers::getBundledCssPath('homePage'),
+                'bundled_scripts' => ClientBundleHelpers::getBundledJsPath('homePage')
             ]
         );
     }
