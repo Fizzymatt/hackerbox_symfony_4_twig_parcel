@@ -1,3 +1,3 @@
-import Messages from '../main';
+import { Messages } from '../main';
 
 console.log(Messages.SayHello());

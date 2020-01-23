@@ -1,8 +1,9 @@
 const crypto = require('crypto');
 const fs = require('fs');
-const path = require('path');
+const path = { resolve, dirname, basename } = require('path');
+const { readdir, stat } = require('fs').promises;
+const directories = { public: 'public', assets: 'assets' };
 
-const sourceDir = 'public/assets';
 
 const buildHashData = async (assetPath) => {
     const contents = await fs.promises.readFile(assetPath, 'binary');
@@ -10,23 +11,31 @@ const buildHashData = async (assetPath) => {
     
     return {
         assetPath,
-        hashedAssetPath: assetPath.replace(/(^.*)(\..*)$/i, `$1_${hash}$2`)
+        hashedAssetPath: assetPath.replace(/(^.*)(\.(js|css))$/i, `$1_${hash}$2`)
     };
 }
 
-fs.readdir(sourceDir, async (err, files) => {
-    const filesToBeHashed = files.filter((filePath) => new RegExp(/^.*\.bundle\.(js|css)$/i).test(filePath));
+const filesToBeHashed = (files) => files.filter((filePath) => new RegExp(/^.*.(js|css)$/i).test(filePath));
 
-    const hashData = await Promise.all(
-        filesToBeHashed.map(
-            (filePath) => buildHashData(path.join(sourceDir, filePath))
-        )
-    );
-        
-    hashData.forEach((paths) => {
-        fs.rename(paths.assetPath, paths.hashedAssetPath, function(err) {
+
+async function* getFilesToHash(rootPath) {
+    const fileNames = await readdir(rootPath);
+    for (const fileName of fileNames) {
+        const fullPath = resolve(rootPath, fileName);
+        if ((await stat(fullPath)).isDirectory()) yield* getFilesToHash(fullPath);
+        if (basename(dirname(fullPath)) !== directories.assets) yield fullPath;
+    }
+}
+
+
+(async () => {
+    for await (const assetPath of getFilesToHash(path.join(directories.public, directories.assets))) {
+        if (!assetPath.match(/^.*.(js|css)$/i)) continue;
+
+        const hashData = await buildHashData(assetPath);
+        fs.rename(hashData.assetPath, hashData.hashedAssetPath, function(err) {
             if (err) return console.log(`ERROR when adding hashes to asset filenames: ${err}`);
-            console.log(`Renamed asset file ${paths.assetPath} to ${paths.hashedAssetPath}`);
+            console.log(`Renamed asset file ${hashData.assetPath} to ${hashData.hashedAssetPath}`);
         });
-    });
-});
+    }
+})();
