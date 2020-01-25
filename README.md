@@ -11,7 +11,7 @@ I made this project as part of a [tutorial](https://hackerbox.io/articles/symfon
 ### Prerequisites ###
 
 - A local installation of the [Composer](https://getcomposer.org/) dependency manager
-- A local installation of the latest stable [NodeJs](https://nodejs.org)
+- A local installation of [NodeJs](https://nodejs.org) 12.14.1+. I've included an .nvmrc file for those people that are using [NVM](https://github.com/nvm-sh/nvm)
 
 ### Install dependencies ###
 
