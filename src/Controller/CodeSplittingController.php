@@ -19,8 +19,8 @@ class CodeSplittingController extends AbstractController
             [
                 'essential_styles' => ClientBundleHelpers::getEssentialCssInline(),
                 'essential_scripts' => ClientBundleHelpers::getEssentialJsInline(),
-                'bundled_styles' => ClientBundleHelpers::getBundledCssPath('codeSplitting'),
-                'bundled_scripts' => ClientBundleHelpers::getBundledJsPath('codeSplitting')
+                'bundled_styles' => ClientBundleHelpers::getBundlePath('codeSplitting', 'index.css'),
+                'bundled_scripts' => ClientBundleHelpers::getBundlePath('codeSplitting', 'index.js')
             ]
         );
     }

@@ -4,41 +4,60 @@ namespace App\Controller\Helpers;
 
 
 class ClientBundleHelpers {
+    
+    private const BASE_ASSET_PATH = '/../../../public';
+    private const ASSET_DIR_NAME = 'assets';
+
     /**
-     * @return bool|string
+     * @return array|false|string
      */
     public static function getEssentialCssInline() {
-        return file_get_contents(__DIR__ . '/../../../public/assets/essential.css');
+        return file_get_contents(__DIR__ . self::BASE_ASSET_PATH . '/' . self::ASSET_DIR_NAME . '/essential.css');
     }
 
     /**
-     * @return bool|string
+     * @return array|false|string
      */
     public static function getEssentialJsInline() {
-        return file_get_contents(__DIR__ . '/../../../public/assets/essential.js');
+        return file_get_contents(__DIR__ . self::BASE_ASSET_PATH . '/' . self::ASSET_DIR_NAME . '/essential.js');
     }
 
     /**
-     * @param string $bundleNames
+     * @param string $bundleName
+     * @param string $bundleFileName
      * @return string
      */
-    public static function getBundledCssPath(string $bundleName) {
-        $files = glob(__DIR__ . '/../../../public/assets/' . $bundleName . '/index*.css');
-        if (empty($files)) return '';
-        
-        preg_match('/\/assets\/' . $bundleName . '\/index(_[0-9a-z]+)?\.css/', $files[0], $matches);
-        return (!empty($matches)) ? $matches[0] : '';
+    public static function getBundlePath(string $bundleDirName, string $bundleFileName) : string {
+        $assetPath = self::getExternalBundlePath(self::BASE_ASSET_PATH, self::ASSET_DIR_NAME, $bundleFileName, $bundleDirName . '/');
+        if (!empty($assetPath)) return $assetPath;
+
+        $assetPath = self::getExternalBundlePath(self::BASE_ASSET_PATH, self::ASSET_DIR_NAME, $bundleFileName);
+        if (!empty($assetPath)) return $assetPath;
+
+        return '';
     }
 
     /**
-     * @param string $bundleNames
+     * @param string $basePath
+     * @param string $assetDirName
+     * @param string $bundleFileName
+     * @param string $bundleDir
      * @return string
      */
-    public static function getBundledJsPath(string $bundleName) {
-        $files = glob(__DIR__ . '/../../../public/assets/' . $bundleName . '/index*.js');
-        if (empty($files)) return '';
+    private static function getExternalBundlePath(string $basePath, string $assetDirName, string $bundleFileName, string $bundleDir = '') : ?string {
+        preg_match('/(.+)(\..+$)/', $bundleFileName, $baseFileMatches);
+        if (count($baseFileMatches) !== 3) throw new \UnexpectedValueException('A total of 3 matches were expected');
+        $baseFileName = $baseFileMatches[1];
+        $baseFileExt = $baseFileMatches[2];
+
+        $files = glob(__DIR__ . $basePath . '/' . $assetDirName . '/' . $bundleDir . $baseFileName . '*' . $baseFileExt);
+
+        if (empty($files)) return null;
         
-        preg_match('/\/assets\/' . $bundleName . '\/index(_[0-9a-z]+)?\.js/', $files[0], $matches);
-        return (!empty($matches)) ? $matches[0] : '';
+        $indexPattern = str_replace('/', '\/', '/' . $assetDirName . '/' . $bundleDir);
+        preg_match('/' . $indexPattern . $baseFileName . '(_[0-9a-z]+)?' . $baseFileExt . '/', $files[0], $matches);
+        if (!empty($matches)) return $matches[0];
+
+        return null;
     }
 }
