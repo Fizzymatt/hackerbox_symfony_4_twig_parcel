@@ -9,16 +9,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build_styles_prod": "parcel build styles/homePage/*.css styles/codeSplitting/*.css --out-dir public/assets --no-source-maps",
-    "build_styles_dev": "parcel watch styles/homePage/*.css styles/codeSplitting/*.css --no-hmr --out-dir public/assets",
+    "build_styles_dev_homePage": "parcel watch styles/homePage/*.css --no-hmr --out-dir public/assets --public-url /assets/",
+    "build_styles_dev_codeSplitting": "parcel watch styles/codeSplitting/*.css --no-hmr --out-dir public/assets --public-url /assets/",
     "build_scripts_prod": "parcel build scripts/homePage/*.js scripts/codeSplitting/*.js --out-dir public/assets --no-source-maps",
-    "build_scripts_dev": "parcel watch scripts/homePage/*.js scripts/codeSplitting/*.js --no-hmr --out-dir public/assets",
+    "build_scripts_dev_homePage": "parcel watch scripts/homePage/*.js --no-hmr --out-dir public/assets --public-url /assets/",
+    "build_scripts_dev_codeSplitting": "parcel watch scripts/codeSplitting/*.js --no-hmr --out-dir public/assets --public-url /assets/",
     "add_asset_hash": "node utility/addAssetHashes.js",
     "build_essential_styles_prod": "parcel build styles/essential.css --out-dir public/assets --no-source-maps",
     "build_essential_styles_dev": "parcel watch styles/essential.css --no-hmr --out-dir public/assets --no-source-maps",
     "build_essential_scripts_prod": "parcel build scripts/essential.js --out-dir public/assets --no-source-maps",
     "build_essential_scripts_dev": "parcel watch scripts/essential.js --no-hmr --out-dir public/assets --no-source-maps",
-    "build_assets_prod": "find public/assets/* | xargs rm -r; npm run build_essential_styles_prod & npm run build_essential_scripts_prod & npm run build_styles_prod; npm run build_scripts_prod; npm run add_asset_hash",
-    "build_assets_dev": "find public/assets/* | xargs rm -r; npm run build_essential_styles_dev & npm run build_essential_scripts_dev & npm run build_styles_dev & npm run build_scripts_dev"
+    "build_assets_prod": "find public/assets/* | xargs rm -r; npm run build_styles_prod; npm run build_scripts_prod; npm run add_asset_hash; npm run build_essential_styles_prod & npm run build_essential_scripts_prod",
+    "build_assets_dev": "find public/assets/* | xargs rm -r; npm run build_essential_styles_dev & npm run build_essential_scripts_dev & npm run build_styles_dev_homePage & npm run build_styles_dev_codeSplitting & npm run build_scripts_dev_homePage & npm run build_scripts_dev_codeSplitting"
   },
   "author": "",
   "license": "ISC",
