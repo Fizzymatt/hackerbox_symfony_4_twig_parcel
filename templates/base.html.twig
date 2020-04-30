@@ -3,7 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% if bundled_styles is defined and bundled_styles is not empty %}
+            <link rel="stylesheet" href="{{ bundled_styles }}" />
+        {% endif %}
         {% if essential_styles is defined and essential_styles is not empty %}
             <style>
                 {{ essential_styles|raw }}
@@ -12,7 +14,9 @@
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% if bundled_scripts is defined and bundled_scripts is not empty %}
+            <script src="{{ bundled_scripts }}"></script>
+        {% endif %}
         {% if essential_scripts is defined and essential_scripts is not empty %}
             <script>
                 {{ essential_scripts|raw }}
